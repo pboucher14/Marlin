@@ -1568,8 +1568,8 @@
   //#define BABYSTEP_XY                     // Also enable X/Y Babystepping. Not supported on DELTA!
   #define BABYSTEP_INVERT_Z false           // Change if Z babysteps should go the other way
   //#define BABYSTEP_MILLIMETER_UNITS       // Specify BABYSTEP_MULTIPLICATOR_(XY|Z) in mm instead of micro-steps
-  #define BABYSTEP_MULTIPLICATOR_Z  10      // PBO changed from 1 to 10 // Babysteps are very small. Increase for faster motion.
-  #define BABYSTEP_MULTIPLICATOR_XY 10      // PBO changed from 1 to 10
+  #define BABYSTEP_MULTIPLICATOR_Z  4      // PBO changed from 1 to 4 // Babysteps are very small. Increase for faster motion.
+  #define BABYSTEP_MULTIPLICATOR_XY 4      // PBO changed from 1 to 4
 
   #define DOUBLECLICK_FOR_Z_BABYSTEPPING  // PBO changed from default wich is commented. Double-click on the Status Screen for Z Babystepping.
   #if ENABLED(DOUBLECLICK_FOR_Z_BABYSTEPPING)

@@ -760,7 +760,7 @@
  * Override with M203
  *                                      X, Y, Z, E0 [, E1[, E2...]]
  */
-#define DEFAULT_MAX_FEEDRATE          { 500, 500, 5, 25 } // PBO custom feedrate for ENDER-3
+#define DEFAULT_MAX_FEEDRATE          { 500, 500, 10, 60 } // PBO custom feedrate for ENDER-3
 
 
 //#define LIMITED_MAX_FR_EDITING        // Limit edit via M203 or LCD to DEFAULT_MAX_FEEDRATE * 2
