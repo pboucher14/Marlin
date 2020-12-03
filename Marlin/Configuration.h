@@ -738,11 +738,7 @@
  * Override with M92
  *                                      X, Y, Z, E0 [, E1[, E2...]]
  */
-<<<<<<< HEAD
 #define DEFAULT_AXIS_STEPS_PER_UNIT   { 80, 80, 401, 94 } // PBO custom e-steps Original: { 80, 80, 400, 93 }
-=======
-#define DEFAULT_AXIS_STEPS_PER_UNIT   { 80, 80, 400, 500 }
->>>>>>> origin/bugfix-2.0.x
 
 /**
  * Default Max Feed Rate (mm/s)
@@ -1182,12 +1178,7 @@
 #if ENABLED(FILAMENT_RUNOUT_SENSOR)
   #define FIL_RUNOUT_ENABLED_DEFAULT true // Enable the sensor on startup. Override with M412 followed by M500.
   #define NUM_RUNOUT_SENSORS   1          // Number of sensors, up to one per extruder. Define a FIL_RUNOUT#_PIN for each.
-<<<<<<< HEAD
   #define FIL_RUNOUT_STATE     HIGH   // PBO Changed from LOW to HIGH. Pin state indicating that filament is NOT present.
-=======
-
-  #define FIL_RUNOUT_STATE     LOW        // Pin state indicating that filament is NOT present.
->>>>>>> origin/bugfix-2.0.x
   #define FIL_RUNOUT_PULLUP               // Use internal pullup for filament runout pins.
   //#define FIL_RUNOUT_PULLDOWN           // Use internal pulldown for filament runout pins.
 
