@@ -70,7 +70,7 @@
 // @section info
 
 // Author info of this build printed to the host during boot and M115
-#define STRING_CONFIG_H_AUTHOR "(PBO, PBO_VER_3)" // Who made the changes.
+#define STRING_CONFIG_H_AUTHOR "(PBO, PBO_VER_4)" // Who made the changes.
 //#define CUSTOM_VERSION_FILE Version.h // Path from the root directory (no quotes)
 
 /**
@@ -132,7 +132,7 @@
 #endif
 
 // Name displayed in the LCD "Ready" message and Info menu
-#define CUSTOM_MACHINE_NAME "PBO Ver 3"
+#define CUSTOM_MACHINE_NAME "PBO Ver 4"
 
 // Printer's unique ID, used by some programs to differentiate between machines.
 // Choose your own or use a service like https://www.uuidgenerator.net/version4
@@ -493,9 +493,9 @@
     #define DEFAULT_Ki_LIST {   1.08,   1.08 }
     #define DEFAULT_Kd_LIST { 114.00, 114.00 }
   #else
-    #define DEFAULT_Kp 19.77 // PBO Changed for new thermistor. Original value 21.73
-    #define DEFAULT_Ki 1.16  // PBO Changed for new thermistor. Original value 1.54
-    #define DEFAULT_Kd 84.19 // PBO Changed for new thermistor. Original value 76.55
+    #define DEFAULT_Kp 22.90 // PBO Changed for new thermistor. Original value 21.73
+    #define DEFAULT_Ki 1.35  // PBO Changed for new thermistor. Original value 1.54
+    #define DEFAULT_Kd 97.15 // PBO Changed for new thermistor. Original value 76.55
   #endif
 #endif // PIDTEMP
 
@@ -985,7 +985,7 @@
  *     O-- FRONT --+
  */
 // #define NOZZLE_TO_PROBE_OFFSET { 10, 10, 0 } DEFAULT
-#define NOZZLE_TO_PROBE_OFFSET { -48, -10, -0.34 } // PBO Bullseye mount BLTouch on the left
+#define NOZZLE_TO_PROBE_OFFSET { -48, -10, -0.38 } // PBO Bullseye mount BLTouch on the left
 
 // Most probes should stay away from the edges of the bed, but
 // with NOZZLE_AS_PROBE this can be negative for a wider probing area.

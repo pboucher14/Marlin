@@ -2615,9 +2615,9 @@
 
   #if EITHER(SENSORLESS_HOMING, SENSORLESS_PROBING)
     // TMC2209: 0...255. TMC2130: -64...63
-    #define X_STALL_SENSITIVITY  60 // PBO changed value from 8 to 60
+    #define X_STALL_SENSITIVITY  85 // PBO changed value from 8 to 85
     #define X2_STALL_SENSITIVITY X_STALL_SENSITIVITY
-    #define Y_STALL_SENSITIVITY  60 // PBO changed value from 8 to 60
+    #define Y_STALL_SENSITIVITY  85 // PBO changed value from 8 to 85
     #define Y2_STALL_SENSITIVITY Y_STALL_SENSITIVITY
     //#define Z_STALL_SENSITIVITY  8
     //#define Z2_STALL_SENSITIVITY Z_STALL_SENSITIVITY
