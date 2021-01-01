@@ -192,3 +192,4 @@ __pycache__
 eeprom.dat
 imgui.ini
 bin/project.checksum
+bin/project.checksum
