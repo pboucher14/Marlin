@@ -51,6 +51,8 @@
   float manual_move_e_origin = 0;
 #endif
 
+extern const char G28_STR[];
+
 //
 // "Motion" > "Move Axis" submenu
 //
@@ -365,8 +367,6 @@ void menu_motion() {
   //
   #if ENABLED(ASSISTED_TRAMMING_WIZARD)
     SUBMENU(MSG_TRAMMING_WIZARD, goto_tramming_wizard);
-  #elif ENABLED(ASSISTED_TRAMMING_MENU_ITEM)
-    GCODES_ITEM(MSG_ASSISTED_TRAMMING, PSTR("G35"));
   #endif
 
   //
@@ -384,7 +384,7 @@ void menu_motion() {
   #elif HAS_LEVELING && DISABLED(SLIM_LCD_MENUS)
 
     #if DISABLED(PROBE_MANUALLY)
-      GCODES_ITEM(MSG_LEVEL_BED, PSTR("G28\nG29"));
+      GCODES_ITEM(MSG_LEVEL_BED, PSTR("G29N"));
     #endif
 
     if (all_axes_homed() && leveling_is_valid()) {
@@ -404,7 +404,7 @@ void menu_motion() {
   #endif
 
   #if ENABLED(Z_MIN_PROBE_REPEATABILITY_TEST)
-    GCODES_ITEM(MSG_M48_TEST, PSTR("G28 O\nM48 P10"));
+    GCODES_ITEM(MSG_M48_TEST, PSTR("G28O\nM48 P10"));
   #endif
 
   //
