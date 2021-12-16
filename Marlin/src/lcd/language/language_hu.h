@@ -47,7 +47,7 @@ namespace Language_hu {
   LSTR MSG_MEDIA_INSERTED                 = _UxGT("Tároló behelyezve");
   LSTR MSG_MEDIA_REMOVED                  = _UxGT("Tároló eltávolítva");
   LSTR MSG_MEDIA_WAITING                  = _UxGT("Várakozás a tárolóra");
-  LSTR MSG_SD_INIT_FAIL                   = _UxGT("SD-kártya hiba");
+  LSTR MSG_MEDIA_INIT_FAIL                = _UxGT("Tároló-kártya hiba");
   LSTR MSG_MEDIA_READ_ERROR               = _UxGT("Tároló olvasási hiba");
   LSTR MSG_MEDIA_USB_REMOVED              = _UxGT("USB eltávolítva");
   LSTR MSG_MEDIA_USB_FAILED               = _UxGT("USB eszköz hiba");
@@ -89,7 +89,7 @@ namespace Language_hu {
   LSTR MSG_TRAMMING_WIZARD                = _UxGT("Elektromos varázsló");
   LSTR MSG_SELECT_ORIGIN                  = _UxGT("Eredeti választása");
   LSTR MSG_LAST_VALUE_SP                  = _UxGT("Utolsó érték ");
-  #if PREHEAT_COUNT
+  #if HAS_PREHEAT
     LSTR MSG_PREHEAT_1                    = _UxGT("Fütés ") PREHEAT_1_LABEL;
     LSTR MSG_PREHEAT_1_H                  = _UxGT("Fütés ") PREHEAT_1_LABEL " ~";
     LSTR MSG_PREHEAT_1_END                = _UxGT("Fütés ") PREHEAT_1_LABEL _UxGT(" Fej");

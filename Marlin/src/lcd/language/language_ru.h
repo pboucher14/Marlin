@@ -44,9 +44,9 @@ namespace Language_ru {
   LSTR MSG_MEDIA_REMOVED                    = _UxGT("SD карта извлечена");
   LSTR MSG_MEDIA_WAITING                    = _UxGT("Вставьте SD карту");
   #if LCD_WIDTH > 21
-    LSTR MSG_SD_INIT_FAIL                   = _UxGT("Сбой инициализации SD");
+    LSTR MSG_MEDIA_INIT_FAIL                = _UxGT("Сбой инициализации SD");
   #else
-    LSTR MSG_SD_INIT_FAIL                   = _UxGT("Сбой инициализ. SD");
+    LSTR MSG_MEDIA_INIT_FAIL                = _UxGT("Сбой инициализ. SD");
   #endif
   LSTR MSG_MEDIA_READ_ERROR                 = _UxGT("Ошибка считывания");
   LSTR MSG_MEDIA_USB_REMOVED                = _UxGT("USB диск удалён");
@@ -106,7 +106,7 @@ namespace Language_ru {
   #else
     LSTR MSG_LAST_VALUE_SP                  = _UxGT("Послед. знач. ");
   #endif
-  #if PREHEAT_COUNT
+  #if HAS_PREHEAT
     LSTR MSG_PREHEAT_1                      = _UxGT("Преднагрев ") PREHEAT_1_LABEL;
     LSTR MSG_PREHEAT_1_H                    = _UxGT("Нагрев ") PREHEAT_1_LABEL " ~";
     LSTR MSG_PREHEAT_1_END                  = _UxGT("Нагрев ") PREHEAT_1_LABEL _UxGT(" сопло");
