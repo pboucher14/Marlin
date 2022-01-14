@@ -2801,7 +2801,7 @@
   #endif
 
   #if AXIS_IS_TMC(E0)
-    #define E0_CURRENT      650 // PBO changed from 800 (650 for stock extruder)
+    #define E0_CURRENT      500 // PBO changed from 800 (650 for stock extruder, 500 for Bondtech BMG)
     #define E0_MICROSTEPS    16
     #define E0_RSENSE         0.11
     #define E0_CHAIN_POS     -1

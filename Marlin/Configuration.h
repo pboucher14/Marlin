@@ -69,7 +69,7 @@
 // @section info
 
 // Author info of this build printed to the host during boot and M115
-#define STRING_CONFIG_H_AUTHOR "(PBO, PBO_VER_4.3)" // Who made the changes.
+#define STRING_CONFIG_H_AUTHOR "(PBO, PBO_VER_4.4)" // Who made the changes.
 //#define CUSTOM_VERSION_FILE Version.h // Path from the root directory (no quotes)
 
 /**
@@ -143,7 +143,7 @@
 //#define BLUETOOTH
 
 // Name displayed in the LCD "Ready" message and Info menu
-#define CUSTOM_MACHINE_NAME "PBO Ver 4.3"
+#define CUSTOM_MACHINE_NAME "PBO Ver 4.4"
 
 // Printer's unique ID, used by some programs to differentiate between machines.
 // Choose your own or use a service like https://www.uuidgenerator.net/version4
@@ -927,7 +927,7 @@
  * Override with M92
  *                                      X, Y, Z [, I [, J [, K]]], E0 [, E1[, E2...]]
  */
-#define DEFAULT_AXIS_STEPS_PER_UNIT   { 80, 80, 401, 94 } // PBO custom e-steps E0 for bondtech bmg Original: { 80, 80, 400, 93 }
+#define DEFAULT_AXIS_STEPS_PER_UNIT   { 80, 80, 401, 415 } // PBO custom e-steps E0 for bondtech bmg Original: { 80, 80, 400, 93 }
 
 /**
  * Default Max Feed Rate (mm/s)
@@ -1192,7 +1192,7 @@
  *     O-- FRONT --+
  */
 // #define NOZZLE_TO_PROBE_OFFSET { 10, 10, 0 } DEFAULT
-#define NOZZLE_TO_PROBE_OFFSET { -48, -10, -2.15 } // PBO Bullseye mount BLTouch on the left
+#define NOZZLE_TO_PROBE_OFFSET { -48, -10, -2.12 } // PBO Bullseye mount BLTouch on the left
 
 // Most probes should stay away from the edges of the bed, but
 // with NOZZLE_AS_PROBE this can be negative for a wider probing area.
@@ -1353,7 +1353,7 @@
 // @section extruder
 
 // For direct drive extruder v9 set to true, for geared extruder set to false.
-#define INVERT_E0_DIR true  // PBO change from default false to true
+#define INVERT_E0_DIR false  // PBO true for SKR 1.3 with stock extruder, false with bondtech bmg extruder
 #define INVERT_E1_DIR false
 #define INVERT_E2_DIR false
 #define INVERT_E3_DIR false
