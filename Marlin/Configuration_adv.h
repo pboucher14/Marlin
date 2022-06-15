@@ -30,7 +30,7 @@
  *
  * Basic settings can be found in Configuration.h
  */
-#define CONFIGURATION_ADV_H_VERSION 02000903
+#define CONFIGURATION_ADV_H_VERSION 02010000
 
 //===========================================================================
 //============================= Thermal Settings ============================
@@ -246,20 +246,6 @@
   #define BOARD_MAXTEMP          70  // (°C)
   #ifndef TEMP_BOARD_PIN
     //#define TEMP_BOARD_PIN -1      // Board temp sensor pin, if not set in pins file.
-  #endif
-#endif
-
-//
-// Laser Coolant Flow Meter
-//
-//#define LASER_COOLANT_FLOW_METER
-#if ENABLED(LASER_COOLANT_FLOW_METER)
-  #define FLOWMETER_PIN         20  // Requires an external interrupt-enabled pin (e.g., RAMPS 2,3,18,19,20,21)
-  #define FLOWMETER_PPL       5880  // (pulses/liter) Flow meter pulses-per-liter on the input pin
-  #define FLOWMETER_INTERVAL  1000  // (ms) Flow rate calculation interval in milliseconds
-  #define FLOWMETER_SAFETY          // Prevent running the laser without the minimum flow rate set below
-  #if ENABLED(FLOWMETER_SAFETY)
-    #define FLOWMETER_MIN_LITERS_PER_MINUTE 1.5 // (liters/min) Minimum flow required when enabled
   #endif
 #endif
 
@@ -621,7 +607,6 @@
 #define E7_AUTO_FAN_PIN -1
 #define CHAMBER_AUTO_FAN_PIN -1
 #define COOLER_AUTO_FAN_PIN -1
-#define COOLER_FAN_PIN -1
 
 #define EXTRUDER_AUTO_FAN_TEMPERATURE 50
 #define EXTRUDER_AUTO_FAN_SPEED 255   // 255 == full speed
@@ -716,73 +701,6 @@
 #endif
 
 /**
- * Dual Steppers / Dual Endstops
- *
- * This section will allow you to use extra E drivers to drive a second motor for X, Y, or Z axes.
- *
- * For example, set X_DUAL_STEPPER_DRIVERS setting to use a second motor. If the motors need to
- * spin in opposite directions set INVERT_X2_VS_X_DIR. If the second motor needs its own endstop
- * set X_DUAL_ENDSTOPS. This can adjust for "racking." Use X2_USE_ENDSTOP to set the endstop plug
- * that should be used for the second endstop. Extra endstops will appear in the output of 'M119'.
- *
- * Use X_DUAL_ENDSTOP_ADJUSTMENT to adjust for mechanical imperfection. After homing both motors
- * this offset is applied to the X2 motor. To find the offset home the X axis, and measure the error
- * in X2. Dual endstop offsets can be set at runtime with 'M666 X<offset> Y<offset> Z<offset>'.
- */
-
-//#define X_DUAL_STEPPER_DRIVERS
-#if ENABLED(X_DUAL_STEPPER_DRIVERS)
-  //#define INVERT_X2_VS_X_DIR    // Enable if X2 direction signal is opposite to X
-  //#define X_DUAL_ENDSTOPS
-  #if ENABLED(X_DUAL_ENDSTOPS)
-    #define X2_USE_ENDSTOP _XMAX_
-    #define X2_ENDSTOP_ADJUSTMENT  0
-  #endif
-#endif
-
-//#define Y_DUAL_STEPPER_DRIVERS
-#if ENABLED(Y_DUAL_STEPPER_DRIVERS)
-  //#define INVERT_Y2_VS_Y_DIR   // Enable if Y2 direction signal is opposite to Y
-  //#define Y_DUAL_ENDSTOPS
-  #if ENABLED(Y_DUAL_ENDSTOPS)
-    #define Y2_USE_ENDSTOP _YMAX_
-    #define Y2_ENDSTOP_ADJUSTMENT  0
-  #endif
-#endif
-
-//
-// For Z set the number of stepper drivers
-//
-#define NUM_Z_STEPPER_DRIVERS 1   // (1-4) Z options change based on how many
-
-#if NUM_Z_STEPPER_DRIVERS > 1
-  // Enable if Z motor direction signals are the opposite of Z1
-  //#define INVERT_Z2_VS_Z_DIR
-  //#define INVERT_Z3_VS_Z_DIR
-  //#define INVERT_Z4_VS_Z_DIR
-
-  //#define Z_MULTI_ENDSTOPS
-  #if ENABLED(Z_MULTI_ENDSTOPS)
-    #define Z2_USE_ENDSTOP          _XMAX_
-    #define Z2_ENDSTOP_ADJUSTMENT   0
-    #if NUM_Z_STEPPER_DRIVERS >= 3
-      #define Z3_USE_ENDSTOP        _YMAX_
-      #define Z3_ENDSTOP_ADJUSTMENT 0
-    #endif
-    #if NUM_Z_STEPPER_DRIVERS >= 4
-      #define Z4_USE_ENDSTOP        _ZMAX_
-      #define Z4_ENDSTOP_ADJUSTMENT 0
-    #endif
-  #endif
-#endif
-
-// Drive the E axis with two synchronized steppers
-//#define E_DUAL_STEPPER_DRIVERS
-#if ENABLED(E_DUAL_STEPPER_DRIVERS)
-  //#define INVERT_E1_VS_E0_DIR   // Enable if the E motors need opposite DIR states
-#endif
-
-/**
  * Dual X Carriage
  *
  * This setup has two X carriages that can move independently, each with its own hotend.
@@ -812,18 +730,17 @@
  */
 //#define DUAL_X_CARRIAGE
 #if ENABLED(DUAL_X_CARRIAGE)
-  #define X1_MIN_POS X_MIN_POS   // Set to X_MIN_POS
-  #define X1_MAX_POS X_BED_SIZE  // Set a maximum so the first X-carriage can't hit the parked second X-carriage
-  #define X2_MIN_POS    80       // Set a minimum to ensure the  second X-carriage can't hit the parked first X-carriage
-  #define X2_MAX_POS   353       // Set this to the distance between toolheads when both heads are homed
-  #define X2_HOME_DIR    1       // Set to 1. The second X-carriage always homes to the maximum endstop position
-  #define X2_HOME_POS X2_MAX_POS // Default X2 home position. Set to X2_MAX_POS.
-                      // However: In this mode the HOTEND_OFFSET_X value for the second extruder provides a software
-                      // override for X2_HOME_POS. This also allow recalibration of the distance between the two endstops
-                      // without modifying the firmware (through the "M218 T1 X???" command).
-                      // Remember: you should set the second extruder x-offset to 0 in your slicer.
+  #define X1_MIN_POS X_MIN_POS    // Set to X_MIN_POS
+  #define X1_MAX_POS X_BED_SIZE   // A max coordinate so the X1 carriage can't hit the parked X2 carriage
+  #define X2_MIN_POS    80        // A min coordinate so the X2 carriage can't hit the parked X1 carriage
+  #define X2_MAX_POS   353        // The max position of the X2 carriage, typically also the home position
+  #define X2_HOME_DIR    1        // Set to 1. The X2 carriage always homes to the max endstop position
+  #define X2_HOME_POS X2_MAX_POS  // Default X2 home position. Set to X2_MAX_POS.
+                                  // NOTE: For Dual X Carriage use M218 T1 Xn to override the X2_HOME_POS.
+                                  // This allows recalibration of endstops distance without a rebuild.
+                                  // Remember to set the second extruder's X-offset to 0 in your slicer.
 
-  // This is the default power-up mode which can be later using M605.
+  // This is the default power-up mode which can be changed later using M605 S<mode>.
   #define DEFAULT_DUAL_X_CARRIAGE_MODE DXC_AUTO_PARK_MODE
 
   // Default x offset in duplication mode (typically set to half print bed width)
@@ -831,6 +748,77 @@
 
   // Default action to execute following M605 mode change commands. Typically G28X to apply new mode.
   //#define EVENT_GCODE_IDEX_AFTER_MODECHANGE "G28X"
+#endif
+
+/**
+ * Multi-Stepper / Multi-Endstop
+ *
+ * When X2_DRIVER_TYPE is defined, this indicates that the X and X2 motors work in tandem.
+ * The following explanations for X also apply to Y and Z multi-stepper setups.
+ * Endstop offsets may be changed by 'M666 X<offset> Y<offset> Z<offset>' and stored to EEPROM.
+ *
+ * - Enable INVERT_X2_VS_X_DIR if the X2 motor requires an opposite DIR signal from X.
+ *
+ * - Enable X_DUAL_ENDSTOPS if the second motor has its own endstop, with adjustable offset.
+ *
+ *   - Extra endstops are included in the output of 'M119'.
+ *
+ *   - Set X_DUAL_ENDSTOP_ADJUSTMENT to the known error in the X2 endstop.
+ *     Applied to the X2 motor on 'G28' / 'G28 X'.
+ *     Get the offset by homing X and measuring the error.
+ *     Also set with 'M666 X<offset>' and stored to EEPROM with 'M500'.
+ *
+ *   - Use X2_USE_ENDSTOP to set the endstop plug by name. (_XMIN_, _XMAX_, _YMIN_, _YMAX_, _ZMIN_, _ZMAX_)
+ */
+#if HAS_X2_STEPPER && DISABLED(DUAL_X_CARRIAGE)
+  //#define INVERT_X2_VS_X_DIR        // X2 direction signal is the opposite of X
+  //#define X_DUAL_ENDSTOPS           // X2 has its own endstop
+  #if ENABLED(X_DUAL_ENDSTOPS)
+    #define X2_USE_ENDSTOP    _XMAX_  // X2 endstop board plug. Don't forget to enable USE_*_PLUG.
+    #define X2_ENDSTOP_ADJUSTMENT  0  // X2 offset relative to X endstop
+  #endif
+#endif
+
+#if HAS_DUAL_Y_STEPPERS
+  //#define INVERT_Y2_VS_Y_DIR        // Y2 direction signal is the opposite of Y
+  //#define Y_DUAL_ENDSTOPS           // Y2 has its own endstop
+  #if ENABLED(Y_DUAL_ENDSTOPS)
+    #define Y2_USE_ENDSTOP    _YMAX_  // Y2 endstop board plug. Don't forget to enable USE_*_PLUG.
+    #define Y2_ENDSTOP_ADJUSTMENT  0  // Y2 offset relative to Y endstop
+  #endif
+#endif
+
+//
+// Multi-Z steppers
+//
+#ifdef Z2_DRIVER_TYPE
+  //#define INVERT_Z2_VS_Z_DIR        // Z2 direction signal is the opposite of Z
+
+  //#define Z_MULTI_ENDSTOPS          // Other Z axes have their own endstops
+  #if ENABLED(Z_MULTI_ENDSTOPS)
+    #define Z2_USE_ENDSTOP   _XMAX_   // Z2 endstop board plug. Don't forget to enable USE_*_PLUG.
+    #define Z2_ENDSTOP_ADJUSTMENT 0   // Z2 offset relative to Y endstop
+  #endif
+  #ifdef Z3_DRIVER_TYPE
+    //#define INVERT_Z3_VS_Z_DIR      // Z3 direction signal is the opposite of Z
+    #if ENABLED(Z_MULTI_ENDSTOPS)
+      #define Z3_USE_ENDSTOP   _YMAX_ // Z3 endstop board plug. Don't forget to enable USE_*_PLUG.
+      #define Z3_ENDSTOP_ADJUSTMENT 0 // Z3 offset relative to Y endstop
+    #endif
+  #endif
+  #ifdef Z4_DRIVER_TYPE
+    //#define INVERT_Z4_VS_Z_DIR      // Z4 direction signal is the opposite of Z
+    #if ENABLED(Z_MULTI_ENDSTOPS)
+      #define Z4_USE_ENDSTOP   _ZMAX_ // Z4 endstop board plug. Don't forget to enable USE_*_PLUG.
+      #define Z4_ENDSTOP_ADJUSTMENT 0 // Z4 offset relative to Y endstop
+    #endif
+  #endif
+#endif
+
+// Drive the E axis with two synchronized steppers
+//#define E_DUAL_STEPPER_DRIVERS
+#if ENABLED(E_DUAL_STEPPER_DRIVERS)
+  //#define INVERT_E1_VS_E0_DIR       // E direction signals are opposites
 #endif
 
 // Activate a solenoid on the active extruder with M380. Disable all with M381.
@@ -845,12 +833,12 @@
  * the position of the toolhead relative to the workspace.
  */
 
-//#define SENSORLESS_BACKOFF_MM  { 2, 2, 0 }  // (mm) Backoff from endstops before sensorless homing
+//#define SENSORLESS_BACKOFF_MM  { 2, 2, 0 }  // (linear=mm, rotational=°) Backoff from endstops before sensorless homing
 
-#define HOMING_BUMP_MM      { 0, 0, 2 }       // PBO changed from { 5, 5, 2 }. (mm) Backoff from endstops after first bump
+#define HOMING_BUMP_MM      { 0, 0, 2 }       // PBO changed from { 5, 5, 2 }. (linear=mm, rotational=°) Backoff from endstops after first bump
 #define HOMING_BUMP_DIVISOR { 2, 2, 4 }       // Re-Bump Speed Divisor (Divides the Homing Feedrate)
 
-//#define HOMING_BACKOFF_POST_MM { 2, 2, 2 }  // (mm) Backoff from endstops after homing
+//#define HOMING_BACKOFF_POST_MM { 2, 2, 2 }  // (linear=mm, rotational=°) Backoff from endstops after homing
 
 #define QUICK_HOME                          // PBO Uncommented. If G28 contains XY do a diagonal move first
 //#define HOME_Y_BEFORE_X                     // If G28 contains XY home Y before X
@@ -966,7 +954,7 @@
 
   /**
    * Z Stepper positions for more rapid convergence in bed alignment.
-   * Requires NUM_Z_STEPPER_DRIVERS to be 3 or 4.
+   * Requires 3 or 4 Z steppers.
    *
    * Define Stepper XY positions for Z1, Z2, Z3... corresponding to the screw
    * positions in the bed carriage, with one position per Z stepper in stepper
@@ -1036,6 +1024,9 @@
 #define INVERT_I_STEP_PIN false
 #define INVERT_J_STEP_PIN false
 #define INVERT_K_STEP_PIN false
+#define INVERT_U_STEP_PIN false
+#define INVERT_V_STEP_PIN false
+#define INVERT_W_STEP_PIN false
 #define INVERT_E_STEP_PIN false
 
 /**
@@ -1050,11 +1041,14 @@
 #define DISABLE_INACTIVE_I true
 #define DISABLE_INACTIVE_J true
 #define DISABLE_INACTIVE_K true
+#define DISABLE_INACTIVE_U true
+#define DISABLE_INACTIVE_V true
+#define DISABLE_INACTIVE_W true
 #define DISABLE_INACTIVE_E true
 
 // Default Minimum Feedrates for printing and travel moves
-#define DEFAULT_MINIMUMFEEDRATE       0.0     // (mm/s) Minimum feedrate. Set with M205 S.
-#define DEFAULT_MINTRAVELFEEDRATE     0.0     // (mm/s) Minimum travel feedrate. Set with M205 T.
+#define DEFAULT_MINIMUMFEEDRATE       0.0     // (mm/s. °/s for rotational-only moves) Minimum feedrate. Set with M205 S.
+#define DEFAULT_MINTRAVELFEEDRATE     0.0     // (mm/s. °/s for rotational-only moves) Minimum travel feedrate. Set with M205 T.
 
 // Minimum time that a segment needs to take as the buffer gets emptied
 #define DEFAULT_MINSEGMENTTIME        20000   // (µs) Set with M205 B.
@@ -1090,7 +1084,7 @@
 #if ENABLED(BACKLASH_COMPENSATION)
   // Define values for backlash distance and correction.
   // If BACKLASH_GCODE is enabled these values are the defaults.
-  #define BACKLASH_DISTANCE_MM { 0, 0, 0 } // (mm) One value for each linear axis
+  #define BACKLASH_DISTANCE_MM { 0, 0, 0 } // (linear=mm, rotational=°) One value for each linear axis
   #define BACKLASH_CORRECTION    0.0       // 0.0 = no correction; 1.0 = full correction
 
   // Add steps for motor direction changes on CORE kinematics
@@ -1167,6 +1161,12 @@
   //#define CALIBRATION_MEASURE_JMAX
   //#define CALIBRATION_MEASURE_KMIN
   //#define CALIBRATION_MEASURE_KMAX
+  //#define CALIBRATION_MEASURE_UMIN
+  //#define CALIBRATION_MEASURE_UMAX
+  //#define CALIBRATION_MEASURE_VMIN
+  //#define CALIBRATION_MEASURE_VMAX
+  //#define CALIBRATION_MEASURE_WMIN
+  //#define CALIBRATION_MEASURE_WMAX
 
   // Probing at the exact top center only works if the center is flat. If
   // probing on a screwhead or hollow washer, probe near the edges.
@@ -1336,23 +1336,27 @@
 
 #endif // HAS_MARLINUI_MENU
 
-#if ANY(HAS_DISPLAY, DWIN_CREALITY_LCD_ENHANCED, DWIN_CREALITY_LCD_JYERSUI)
+#if ANY(HAS_DISPLAY, DWIN_LCD_PROUI, DWIN_CREALITY_LCD_JYERSUI)
   //#define SOUND_MENU_ITEM   // Add a mute option to the LCD menu
+  #define SOUND_ON_DEFAULT    // Buzzer/speaker default enabled state
 #endif
 
-#if EITHER(HAS_DISPLAY, DWIN_CREALITY_LCD_ENHANCED)
-  // The timeout (in ms) to return to the status screen from sub-menus
-  //#define LCD_TIMEOUT_TO_STATUS 15000
+#if EITHER(HAS_DISPLAY, DWIN_LCD_PROUI)
+  // The timeout to return to the status screen from sub-menus
+  //#define LCD_TIMEOUT_TO_STATUS 15000   // (ms)
 
   #if ENABLED(SHOW_BOOTSCREEN)
-    #define BOOTSCREEN_TIMEOUT 4000      // (ms) Total Duration to display the boot screen(s)
+    #define BOOTSCREEN_TIMEOUT 4000       // (ms) Total Duration to display the boot screen(s)
     #if EITHER(HAS_MARLINUI_U8GLIB, TFT_COLOR_UI)
-      #define BOOT_MARLIN_LOGO_SMALL     // Show a smaller Marlin logo on the Boot Screen (saving lots of flash)
+      #define BOOT_MARLIN_LOGO_SMALL      // Show a smaller Marlin logo on the Boot Screen (saving lots of flash)
     #endif
   #endif
 
   // Scroll a longer status message into view
   #define STATUS_MESSAGE_SCROLLING  // PBO changed from default wich is commented
+
+  // Apply a timeout to low-priority status messages
+  //#define STATUS_MESSAGE_TIMEOUT_SEC 30 // (seconds)
 
   // On the Info Screen, display XY with one decimal place when possible
   //#define LCD_DECIMAL_SMALL_XY
@@ -1678,13 +1682,24 @@
   //#define XYZ_NO_FRAME
   #define XYZ_HOLLOW_FRAME
 
-  // A bigger font is available for edit items. Costs 3120 bytes of PROGMEM.
+  // A bigger font is available for edit items. Costs 3120 bytes of flash.
   // Western only. Not available for Cyrillic, Kana, Turkish, Greek, or Chinese.
   //#define USE_BIG_EDIT_FONT
 
-  // A smaller font may be used on the Info Screen. Costs 2434 bytes of PROGMEM.
+  // A smaller font may be used on the Info Screen. Costs 2434 bytes of flash.
   // Western only. Not available for Cyrillic, Kana, Turkish, Greek, or Chinese.
   //#define USE_SMALL_INFOFONT
+
+  /**
+   * Graphical Display Sleep
+   *
+   * The U8G library provides sleep / wake functions for SH1106, SSD1306,
+   * SSD1309, and some other DOGM displays.
+   * Enable this option to save energy and prevent OLED pixel burn-in.
+   * Adds the menu item Configuration > LCD Timeout (m) to set a wait period
+   * from 0 (disabled) to 99 minutes.
+   */
+  //#define DISPLAY_SLEEP_MINUTES 2  // (minutes) Timeout before turning off the screen
 
   /**
    * ST7920-based LCDs can emulate a 16 x 4 character display using
@@ -1727,7 +1742,7 @@
   //#define STATUS_ALT_FAN_BITMAP     // Use the alternative fan bitmap
   //#define STATUS_FAN_FRAMES 3       // :[0,1,2,3,4] Number of fan animation frames
   //#define STATUS_HEAT_PERCENT       // Show heating in a progress bar
-  //#define BOOT_MARLIN_LOGO_ANIMATED // Animated Marlin logo. Costs ~3260 (or ~940) bytes of PROGMEM.
+  //#define BOOT_MARLIN_LOGO_ANIMATED // Animated Marlin logo. Costs ~3260 (or ~940) bytes of flash.
 
   // Frivolous Game Options
   //#define MARLIN_BRICKOUT
@@ -1752,7 +1767,6 @@
 // Additional options for DGUS / DWIN displays
 //
 #if HAS_DGUS_LCD
-  #define LCD_SERIAL_PORT 3
   #define LCD_BAUDRATE 115200
 
   #define DGUS_RX_BUFFER_SIZE 128
@@ -2014,6 +2028,21 @@
 // @section leveling
 
 /**
+ * Use Safe Bed Leveling coordinates to move axes to a useful position before bed probing.
+ * For example, after homing a rotational axis the Z probe might not be perpendicular to the bed.
+ * Choose values the orient the bed horizontally and the Z-probe vertically.
+ */
+//#define SAFE_BED_LEVELING_START_X 0.0
+//#define SAFE_BED_LEVELING_START_Y 0.0
+//#define SAFE_BED_LEVELING_START_Z 0.0
+//#define SAFE_BED_LEVELING_START_I 0.0
+//#define SAFE_BED_LEVELING_START_J 0.0
+//#define SAFE_BED_LEVELING_START_K 0.0
+//#define SAFE_BED_LEVELING_START_U 0.0
+//#define SAFE_BED_LEVELING_START_V 0.0
+//#define SAFE_BED_LEVELING_START_W 0.0
+
+/**
  * Points to probe for all 3-point Leveling procedures.
  * Override if the automatically selected points are inadequate.
  */
@@ -2273,7 +2302,7 @@
 #define BUFSIZE 4
 
 // Transmission to Host Buffer Size
-// To save 386 bytes of PROGMEM (and TX_BUFFER_SIZE+3 bytes of RAM) set to 0.
+// To save 386 bytes of flash (and TX_BUFFER_SIZE+3 bytes of RAM) set to 0.
 // To buffer a simple "ok" you need 4 bytes.
 // For ADVANCED_OK (M105) you need 32 bytes.
 // For debug-echo: 128 bytes for the optimal speed.
@@ -2424,7 +2453,7 @@
 
   /**
    * Extra G-code to run while executing tool-change commands. Can be used to use an additional
-   * stepper motor (I axis, see option LINEAR_AXES in Configuration.h) to drive the tool-changer.
+   * stepper motor (e.g., I axis in Configuration.h) to drive the tool-changer.
    */
   //#define EVENT_GCODE_TOOLCHANGE_T0 "G28 A\nG1 A0" // Extra G-code to run while executing tool-change command T0
   //#define EVENT_GCODE_TOOLCHANGE_T1 "G1 A10"       // Extra G-code to run while executing tool-change command T1
@@ -2458,12 +2487,16 @@
     #define TOOLCHANGE_FS_FAN_SPEED          255  // 0-255
     #define TOOLCHANGE_FS_FAN_TIME            10  // (seconds)
 
-    // Swap uninitialized extruder (using TOOLCHANGE_FS_PRIME_SPEED feedrate)
-    // (May break filament if not retracted beforehand.)
-    //#define TOOLCHANGE_FS_INIT_BEFORE_SWAP
+    // Use TOOLCHANGE_FS_PRIME_SPEED feedrate the first time each extruder is primed
+    //#define TOOLCHANGE_FS_SLOW_FIRST_PRIME
 
-    // Prime on the first T0 (For other tools use TOOLCHANGE_FS_INIT_BEFORE_SWAP)
-    // Enable with M217 V1 before printing to avoid unwanted priming on host connect
+    /**
+     * Prime T0 the first time T0 is sent to the printer:
+     *  [ Power-On -> T0 { Activate & Prime T0 } -> T1 { Retract T0, Activate & Prime T1 } ]
+     * If disabled, no priming on T0 until switching back to T0 from another extruder:
+     *  [ Power-On -> T0 { T0 Activated } -> T1 { Activate & Prime T1 } -> T0 { Retract T1, Activate & Prime T0 } ]
+     * Enable with M217 V1 before printing to avoid unwanted priming on host connect.
+     */
     //#define TOOLCHANGE_FS_PRIME_FIRST_USED
 
     /**
@@ -2625,6 +2658,24 @@
     #define K_MAX_CURRENT    1000
     #define K_SENSE_RESISTOR   91
     #define K_MICROSTEPS       16
+  #endif
+
+  #if AXIS_DRIVER_TYPE_U(TMC26X)
+    #define U_MAX_CURRENT    1000
+    #define U_SENSE_RESISTOR   91
+    #define U_MICROSTEPS       16
+  #endif
+
+  #if AXIS_DRIVER_TYPE_V(TMC26X)
+    #define V_MAX_CURRENT    1000
+    #define V_SENSE_RESISTOR   91
+    #define V_MICROSTEPS       16
+  #endif
+
+  #if AXIS_DRIVER_TYPE_W(TMC26X)
+    #define W_MAX_CURRENT    1000
+    #define W_SENSE_RESISTOR   91
+    #define W_MICROSTEPS       16
   #endif
 
   #if AXIS_DRIVER_TYPE_E0(TMC26X)
@@ -2816,6 +2867,36 @@
     //#define K_HOLD_MULTIPLIER 0.5
   #endif
 
+  #if AXIS_IS_TMC(U)
+    #define U_CURRENT      800
+    #define U_CURRENT_HOME U_CURRENT
+    #define U_MICROSTEPS     8
+    #define U_RSENSE         0.11
+    #define U_CHAIN_POS     -1
+    //#define U_INTERPOLATE  true
+    //#define U_HOLD_MULTIPLIER 0.5
+  #endif
+
+  #if AXIS_IS_TMC(V)
+    #define V_CURRENT      800
+    #define V_CURRENT_HOME V_CURRENT
+    #define V_MICROSTEPS     8
+    #define V_RSENSE         0.11
+    #define V_CHAIN_POS     -1
+    //#define V_INTERPOLATE  true
+    //#define V_HOLD_MULTIPLIER 0.5
+  #endif
+
+  #if AXIS_IS_TMC(W)
+    #define W_CURRENT      800
+    #define W_CURRENT_HOME W_CURRENT
+    #define W_MICROSTEPS     8
+    #define W_RSENSE         0.11
+    #define W_CHAIN_POS     -1
+    //#define W_INTERPOLATE  true
+    //#define W_HOLD_MULTIPLIER 0.5
+  #endif
+
   #if AXIS_IS_TMC(E0)
     #define E0_CURRENT      500 // PBO changed from 800 (650 for stock extruder, 500 for Bondtech BMG)
     #define E0_MICROSTEPS    16
@@ -2903,6 +2984,9 @@
   //#define I_CS_PIN          -1
   //#define J_CS_PIN          -1
   //#define K_CS_PIN          -1
+  //#define U_CS_PIN          -1
+  //#define V_CS_PIN          -1
+  //#define W_CS_PIN          -1
   //#define E0_CS_PIN         -1
   //#define E1_CS_PIN         -1
   //#define E2_CS_PIN         -1
@@ -2945,6 +3029,9 @@
   //#define  I_SLAVE_ADDRESS 0
   //#define  J_SLAVE_ADDRESS 0
   //#define  K_SLAVE_ADDRESS 0
+  //#define  U_SLAVE_ADDRESS 0
+  //#define  V_SLAVE_ADDRESS 0
+  //#define  W_SLAVE_ADDRESS 0
   //#define E0_SLAVE_ADDRESS 0
   //#define E1_SLAVE_ADDRESS 0
   //#define E2_SLAVE_ADDRESS 0
@@ -2972,6 +3059,9 @@
   #define STEALTHCHOP_I
   #define STEALTHCHOP_J
   #define STEALTHCHOP_K
+  #define STEALTHCHOP_U
+  #define STEALTHCHOP_V
+  #define STEALTHCHOP_W
   #define STEALTHCHOP_E
 
   /**
@@ -2998,9 +3088,12 @@
   //#define CHOPPER_TIMING_Z2 CHOPPER_TIMING_Z
   //#define CHOPPER_TIMING_Z3 CHOPPER_TIMING_Z
   //#define CHOPPER_TIMING_Z4 CHOPPER_TIMING_Z
-  //#define CHOPPER_TIMING_I  CHOPPER_TIMING
-  //#define CHOPPER_TIMING_J  CHOPPER_TIMING
-  //#define CHOPPER_TIMING_K  CHOPPER_TIMING
+  //#define CHOPPER_TIMING_I  CHOPPER_TIMING        // For I Axis
+  //#define CHOPPER_TIMING_J  CHOPPER_TIMING        // For J Axis
+  //#define CHOPPER_TIMING_K  CHOPPER_TIMING        // For K Axis
+  //#define CHOPPER_TIMING_U  CHOPPER_TIMING        // For U Axis
+  //#define CHOPPER_TIMING_V  CHOPPER_TIMING        // For V Axis
+  //#define CHOPPER_TIMING_W  CHOPPER_TIMING        // For W Axis
   //#define CHOPPER_TIMING_E  CHOPPER_TIMING        // For Extruders (override below)
   //#define CHOPPER_TIMING_E1 CHOPPER_TIMING_E
   //#define CHOPPER_TIMING_E2 CHOPPER_TIMING_E
@@ -3046,9 +3139,12 @@
   #define Z2_HYBRID_THRESHOLD      3
   #define Z3_HYBRID_THRESHOLD      3
   #define Z4_HYBRID_THRESHOLD      3
-  #define I_HYBRID_THRESHOLD       3
-  #define J_HYBRID_THRESHOLD       3
-  #define K_HYBRID_THRESHOLD       3
+  #define I_HYBRID_THRESHOLD       3  // [linear=mm/s, rotational=°/s]
+  #define J_HYBRID_THRESHOLD       3  // [linear=mm/s, rotational=°/s]
+  #define K_HYBRID_THRESHOLD       3  // [linear=mm/s, rotational=°/s]
+  #define U_HYBRID_THRESHOLD       3  // [mm/s]
+  #define V_HYBRID_THRESHOLD       3
+  #define W_HYBRID_THRESHOLD       3
   #define E0_HYBRID_THRESHOLD     30
   #define E1_HYBRID_THRESHOLD     30
   #define E2_HYBRID_THRESHOLD     30
@@ -3098,6 +3194,9 @@
     //#define I_STALL_SENSITIVITY  8
     //#define J_STALL_SENSITIVITY  8
     //#define K_STALL_SENSITIVITY  8
+    //#define U_STALL_SENSITIVITY  8
+    //#define V_STALL_SENSITIVITY  8
+    //#define W_STALL_SENSITIVITY  8
     //#define SPI_ENDSTOPS              // TMC2130 only
     //#define IMPROVE_HOMING_RELIABILITY
   #endif
@@ -3263,6 +3362,33 @@
     #define K_MAX_VOLTAGE     127
     #define K_CHAIN_POS        -1
     #define K_SLEW_RATE         1
+  #endif
+
+  #if AXIS_IS_L64XX(U)
+    #define U_MICROSTEPS      128
+    #define U_OVERCURRENT    2000
+    #define U_STALLCURRENT   1500
+    #define U_MAX_VOLTAGE     127
+    #define U_CHAIN_POS        -1
+    #define U_SLEW_RATE         1
+  #endif
+
+  #if AXIS_IS_L64XX(V)
+    #define V_MICROSTEPS      128
+    #define V_OVERCURRENT    2000
+    #define V_STALLCURRENT   1500
+    #define V_MAX_VOLTAGE     127
+    #define V_CHAIN_POS        -1
+    #define V_SLEW_RATE         1
+  #endif
+
+  #if AXIS_IS_L64XX(W)
+    #define W_MICROSTEPS      128
+    #define W_OVERCURRENT    2000
+    #define W_STALLCURRENT   1500
+    #define W_MAX_VOLTAGE     127
+    #define W_CHAIN_POS        -1
+    #define W_SLEW_RATE         1
   #endif
 
   #if AXIS_IS_L64XX(E0)
@@ -3459,7 +3585,7 @@
  * You'll need to select a pin for the ON/OFF function and optionally choose a 0-5V
  * hardware PWM pin for the speed control and a pin for the rotation direction.
  *
- * See https://marlinfw.org/docs/configuration/laser_spindle.html for more config details.
+ * See https://marlinfw.org/docs/configuration/2.0.9/laser_spindle.html for more config details.
  */
 //#define SPINDLE_FEATURE
 //#define LASER_FEATURE
@@ -3469,8 +3595,11 @@
   #define SPINDLE_LASER_USE_PWM                // Enable if your controller supports setting the speed/power
   #if ENABLED(SPINDLE_LASER_USE_PWM)
     #define SPINDLE_LASER_PWM_INVERT    false  // Set to "true" if the speed/power goes up when you want it to go slower
-    #define SPINDLE_LASER_FREQUENCY     2500   // (Hz) Spindle/laser frequency (only on supported HALs: AVR and LPC)
-  #endif
+    #define SPINDLE_LASER_FREQUENCY     2500   // (Hz) Spindle/laser frequency (only on supported HALs: AVR, ESP32, and LPC)
+                                               // ESP32: If SPINDLE_LASER_PWM_PIN is onboard then <=78125Hz. For I2S expander
+                                               //  the frequency determines the PWM resolution. 2500Hz = 0-100, 977Hz = 0-255, ...
+                                               //  (250000 / SPINDLE_LASER_FREQUENCY) = max value.
+#endif
 
   //#define AIR_EVACUATION                     // Cutter Vacuum / Laser Blower motor control with G-codes M10-M11
   #if ENABLED(AIR_EVACUATION)
@@ -3545,6 +3674,16 @@
     // Define the minimum and maximum test pulse time values for a laser test fire function
     #define LASER_TEST_PULSE_MIN           1   // Used with Laser Control Menu
     #define LASER_TEST_PULSE_MAX         999   // Caution: Menu may not show more than 3 characters
+
+   /**
+    * Laser Safety Timeout
+    *
+    * The laser should be turned off when there is no movement for a period of time.
+    * Consider material flammability, cut rate, and G-code order when setting this
+    * value. Too low and it could turn off during a very slow move; too high and
+    * the material could ignite.
+    */
+    #define LASER_SAFETY_TIMEOUT_MS     1000   // (ms)
 
     /**
      * Enable inline laser power to be handled in the planner / stepper routines.
@@ -3628,6 +3767,20 @@
     #if ENABLED(I2C_AMMETER)
       #define I2C_AMMETER_IMAX            0.1    // (Amps) Calibration value for the expected current range
       #define I2C_AMMETER_SHUNT_RESISTOR  0.1    // (Ohms) Calibration shunt resistor value
+    #endif
+
+    //
+    // Laser Coolant Flow Meter
+    //
+    //#define LASER_COOLANT_FLOW_METER
+    #if ENABLED(LASER_COOLANT_FLOW_METER)
+      #define FLOWMETER_PIN         20  // Requires an external interrupt-enabled pin (e.g., RAMPS 2,3,18,19,20,21)
+      #define FLOWMETER_PPL       5880  // (pulses/liter) Flow meter pulses-per-liter on the input pin
+      #define FLOWMETER_INTERVAL  1000  // (ms) Flow rate calculation interval in milliseconds
+      #define FLOWMETER_SAFETY          // Prevent running the laser without the minimum flow rate set below
+      #if ENABLED(FLOWMETER_SAFETY)
+        #define FLOWMETER_MIN_LITERS_PER_MINUTE 1.5 // (liters/min) Minimum flow required when enabled
+      #endif
     #endif
 
   #endif
@@ -3743,6 +3896,9 @@
  * Auto-report temperatures with M155 S<seconds>
  */
 #define AUTO_REPORT_TEMPERATURES
+#if ENABLED(AUTO_REPORT_TEMPERATURES) && TEMP_SENSOR_REDUNDANT
+  //#define AUTO_REPORT_REDUNDANT // Include the "R" sensor in the auto-report
+#endif
 
 /**
  * Auto-report position with M154 S<seconds>
@@ -4112,12 +4268,12 @@
 
 /**
  * Instant freeze / unfreeze functionality
- * Specified pin has pullup and connecting to ground will instantly pause motion.
  * Potentially useful for emergency stop that allows being resumed.
  */
 //#define FREEZE_FEATURE
 #if ENABLED(FREEZE_FEATURE)
   //#define FREEZE_PIN 41   // Override the default (KILL) pin here
+  #define FREEZE_STATE LOW  // State of pin indicating freeze
 #endif
 
 /**
