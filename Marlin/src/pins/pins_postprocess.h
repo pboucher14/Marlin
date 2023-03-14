@@ -487,6 +487,11 @@
   #define NUM_SERVO_PLUGS 4
 #endif
 
+// Only used within pins files
+#undef NEEDS_X_MINMAX
+#undef NEEDS_Y_MINMAX
+#undef NEEDS_Z_MINMAX
+
 //
 // Assign endstop pins for boards with only 3 connectors
 //
@@ -714,6 +719,8 @@
 #if NUM_RUNOUT_SENSORS < 2
   #undef FIL_RUNOUT2_PIN
 #endif
+
+#undef LCD_PINS_DEFINED
 
 #ifndef LCD_PINS_D4
   #define LCD_PINS_D4 -1
