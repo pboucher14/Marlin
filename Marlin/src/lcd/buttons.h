@@ -38,14 +38,7 @@
   #define HAS_SLOW_BUTTONS 1
 #endif
 
-#if HAS_ENCODER_WHEEL
-  #define ENCODER_PHASE_0 0
-  #define ENCODER_PHASE_1 2
-  #define ENCODER_PHASE_2 3
-  #define ENCODER_PHASE_3 1
-#endif
-
-#if EITHER(HAS_DIGITAL_BUTTONS, HAS_DWIN_E3V2)
+#if ANY(HAS_DIGITAL_BUTTONS, HAS_DWIN_E3V2)
   // Wheel spin pins where BA is 00, 10, 11, 01 (1 bit always changes)
   #define BLEN_A 0
   #define BLEN_B 1
@@ -156,7 +149,7 @@
 #ifndef EN_C
   #define EN_C 0
 #endif
-#if BUTTON_EXISTS(BACK) || EITHER(HAS_TOUCH_BUTTONS, IS_TFTGLCD_PANEL)
+#if BUTTON_EXISTS(BACK) || ANY(HAS_TOUCH_BUTTONS, IS_TFTGLCD_PANEL)
   #define BLEN_D 3
   #define EN_D _BV(BLEN_D)
 #else

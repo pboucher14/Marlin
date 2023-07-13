@@ -26,7 +26,7 @@
 
 #include "../../inc/MarlinConfigPre.h"
 
-#if BOTH(HAS_MARLINUI_MENU, AUTO_BED_LEVELING_UBL)
+#if ALL(HAS_MARLINUI_MENU, AUTO_BED_LEVELING_UBL)
 
 #include "menu_item.h"
 #include "../../gcode/gcode.h"
@@ -35,6 +35,9 @@
 #include "../../module/planner.h"
 #include "../../module/settings.h"
 #include "../../feature/bedlevel/bedlevel.h"
+#if HAS_HOTEND
+  #include "../../module/temperature.h"
+#endif
 
 static int16_t ubl_storage_slot = 0,
                custom_hotend_temp = 150,
