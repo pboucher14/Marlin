@@ -163,3 +163,7 @@ __pycache__
 tags
 *.logs
 *.bak
+
+# PBO added
+/bin/project.checksum
+bin/project.checksum
