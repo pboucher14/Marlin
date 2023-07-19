@@ -165,5 +165,4 @@ tags
 *.bak
 
 # PBO added
-/bin/project.checksum
-bin/project.checksum
+/bin/
