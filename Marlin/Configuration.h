@@ -1488,7 +1488,7 @@
  *     O-- FRONT --+
  */
 //#define NOZZLE_TO_PROBE_OFFSET { 10, 10, 0 } // PBO Commented. Use next line instead
-#define NOZZLE_TO_PROBE_OFFSET { -48, -10, -2.30 } // PBO Bullseye mount BLTouch on the left
+#define NOZZLE_TO_PROBE_OFFSET { -48, -10, -2.35 } // PBO Bullseye mount BLTouch on the left
 
 // Most probes should stay away from the edges of the bed, but
 // with NOZZLE_AS_PROBE this can be negative for a wider probing area.
